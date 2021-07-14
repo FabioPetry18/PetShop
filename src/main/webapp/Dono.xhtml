@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./principal.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                >
+
+    <ui:define name="conteudo">
+
+        <p:panel id="painel_conteudo" header="Pessoa Física" >
+            <p:tabView id="tab_view" activeIndex="#{donoC.aba}">
+               
+            
+                <p:tab title="Pesquisa">
+                    <h:form id="form_pesquisa">
+                        <p:panelGrid columns="3" layout="flex"
+                                     columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2"
+                                     contentStyleClass="ui-fluid">
+                            <p:outputLabel for="don" value="Nome:" />
+                            <p:inputText id="don" value="#{donoC.dono.nome}" required="true" 
+                                         requiredMessage="Nome é obrigatório" />
+                            <p:commandButton value="Pesquisar" update="tabela don" 
+                                             action="#{donoC.pesquisarPorNome()}" />
+                        </p:panelGrid>
+
+                        <p:dataTable id="tabela" var="dono" value="#{donoC.modeldonos}" rows="10"
+                                     paginator="true" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                     rowsPerPageTemplate="5,10,15,{ShowAll|'Todos'}">
+                            <p:column headerText="Nome">
+                                <h:outputText value="#{dono.nome}" />
+                            </p:column>
+                            <p:column headerText="CPF">
+                                <h:outputText value="#{dono.cpf}" />
+                            </p:column>   
+                            <p:column headerText="telefone">
+                                <h:outputText value="#{dono.telefone}" />
+                            </p:column>   
+                            <p:column headerText="email">
+                                <h:outputText value="#{dono.email}" />
+                            </p:column>   
+                          
+
+                            <p:column headerText="Ação">
+                                <p:commandButton icon="pi pi-pencil" title="Alterar" process="@this" 
+                                                 actionListener="#{donoC.prepararAlterar()}" update="@all"
+                                                 style="margin-right: 12px" styleClass="rounded-button ui-button-outlined" />
+
+                                <p:commandButton icon="pi pi-trash" title="Excluir" process="@this"
+                                                 actionListener="#{donoC.excluir}" update="tabela"
+                                                 styleClass="rounded-button ui-button-outlined" >
+                                    <p:confirm header="Confirmação" message="Deseja realmente excluir?" icon="pi pi-info-circle"/>
+                                </p:commandButton>
+                            </p:column>                       
+
+                        </p:dataTable>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" />
+                        </p:confirmDialog>
+
+                    </h:form>
+                </p:tab>
+
+                <!--aba para cadastrar e alterar-->
+                <p:tab title="Novo">
+                    <h:form id="form_novo">
+                        <p:panelGrid columns="4" layout="flex"
+                                     columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4,
+                                     p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4"
+                                     contentStyleClass="p-align-baseline ui-fluid">
+
+                            <p:outputLabel for="nome" value="Nome:" />
+                            <p:inputText id="nome" value="#{donoC.dono.nome}"
+                                         required="true" requiredMessage="Nome é obrigatório!" />
+
+                            <p:outputLabel for="cpf" value="CPF:" />
+                            <p:inputMask id="cpf" value="#{donoC.dono.cpf}" mask="999.999.999-99"
+                                         required="true" requiredMessage="CPF é obrigatório!" />
+                            
+                            <p:outputLabel for="email" value="Email:" />
+                            <p:inputText id="email" value="#{donoC.dono.email}"
+                                         required="true" requiredMessage="Email é obrigatório!" />
+
+                            <p:outputLabel for="telefone" value="telefone:" />
+                            <p:inputText id="telefone" value="#{donoC.dono.telefone}" 
+                                         required="true" requiredMessage="telefone é obrigatório!" />
+
+                                                   
+
+                            <p:outputLabel for="cep" value="CEP:" />
+                            <p:inputMask id="cep" value="#{donoC.endereco.cep}"
+                                         mask="99999-999" size="10"
+                                         required="true" requiredMessage="CEP é obrigatório!" >
+                                <p:ajax listener="#{donoC.buscarCep()}" event="blur" update="rua bairro cidade uf" />
+                            </p:inputMask>
+                            
+                            <p:outputLabel for="rua" value="Logradouro:" />
+                            <p:inputText id="rua" value="#{donoC.endereco.logradouro}" 
+                                         required="true" requiredMessage="Logradouro é obrigatório!" />
+                            
+                            <p:outputLabel for="numero" value="Numero:" />
+                            <p:inputText id="numero" value="#{donoC.endereco.numero}" 
+                                         required="true" requiredMessage="Numero é obrigatório!" />
+                            
+                            <p:outputLabel for="bairro" value="Bairro:" />
+                            <p:inputText id="bairro" value="#{donoC.endereco.bairro}" 
+                                         required="true" requiredMessage="Bairro é obrigatório!" />
+                            
+                            <p:outputLabel for="cidade" value="Cidade:" />
+                            <p:inputText id="cidade" value="#{donoC.endereco.localidade}" 
+                                         required="true" requiredMessage="Cidade é obrigatório!" />
+                            
+                            <p:outputLabel for="uf" value="Estado:" />
+                            <p:inputText id="uf" value="#{donoC.endereco.uf}" 
+                                         required="true" requiredMessage="Estado é obrigatório!" />
+                            
+                            <p:outputLabel for="compl" value="Complemento:" />
+                            <p:inputText id="compl" value="#{donoC.endereco.complemento}" 
+                                         required="true" requiredMessage="Complemento é obrigatório!" />
+
+                        </p:panelGrid>
+
+                        <!--primeira coluna-->
+                        <p:commandButton value="Salvar" actionListener="#{donoC.salvar()}" update="@all"  />
+
+                    </h:form>
+                </p:tab>
+
+            </p:tabView>
+        </p:panel> 
+
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      >
+    <h:head>
+        <title>Sistema Siscom</title>
+        <h:outputStylesheet name="./css/cssLayout.css"  />
+        <h:outputStylesheet library="css" name="default.css"  />
+        <h:outputStylesheet library="css" name="primeflex.min.css"  />
+    </h:head>
+    <h:body>
+
+        <div class="p-grid">
+            <div id="top" class="p-col-12">
+                <h:outputText id="logo_texto" value="PetShop" />
+                 
+            </div>
+
+         
+               
+            <h:form style="margin-right: 115px">
+                     <p:commandButton id="dynaButton" value="Show" type="button" icon="pi pi-bars"/>
+                <p:menu overlay="true" trigger="dynaButton" my="left top" at="left bottom">
+                    <p:submenu label="Options">
+                        <p:menuitem value="Home" outcome="principal" ajax="false" icon="pi pi-save"/>
+                        <p:menuitem value="Dono" outcome="Dono" ajax="false" icon="pi pi-save"/>
+                        <p:menuitem value="Cachorro" outcome="cachorro"  icon="pi pi-refresh"/>
+                        <p:menuitem value="Gato" outcome="gato" icon="pi pi-times"/>
+                        <p:menuitem value="Consulta" outcome="Consulta" icon="pi pi-times"/>
+                    </p:submenu>
+                    
+                </p:menu>
+                </h:form> 
+          
+
+            
+
+            <div id="content" class="p-col-10 left_content">
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                    <div class="p-text-center">
+                        <h:graphicImage library="imagem" name="carregando.gif"  />
+                    </div>
+                </p:dialog>
+
+                <p:messages id="messages" showSummary="true" closable="true">
+                    <p:autoUpdate/>
+                </p:messages>
+
+                <ui:insert name="conteudo"> 
+
+
+
+                </ui:insert>
+            </div>
+        </div>
+
+
+    </h:body>
+</html>
+

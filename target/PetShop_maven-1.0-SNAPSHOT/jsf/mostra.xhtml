@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html" >
+    <h:head>
+        <title>Facelet Title</title>
+
+        <style>
+            .mens{
+                color: red;
+            }
+        </style>
+
+    </h:head>
+    <h:body>
+        <h1>Mostra Cliente</h1>
+
+
+        <h:messages id="mens" showSummary="true" />
+        
+        <h:panelGrid columns="2" >
+
+            <h:outputLabel value="Nome:" />
+            <h:outputText value="#{clienteC.pessoaFisica.nome}" />
+
+            <h:outputLabel value="E-mail:" />
+            <h:outputText value="#{clienteC.pessoaFisica.email}" />
+
+
+        </h:panelGrid>
+
+
+
+
+
+    </h:body>
+</html>
+

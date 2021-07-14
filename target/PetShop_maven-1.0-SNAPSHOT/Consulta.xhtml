@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./principal.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                >
+
+    <ui:define name="conteudo">
+
+        <p:panel id="painel_conteudo" header="Cachorro" >
+            <p:tabView id="tab_view">
+          
+                <p:tab title="Pesquisa">
+                    <h:form id="form_pesquisa">
+                        <p:panelGrid columns="3" layout="flex"
+                                     columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2"
+                                     contentStyleClass="ui-fluid">
+                            
+                            <p:outputLabel for="nome" value="Nome:" />
+                            <p:inputText id="nome" value="#{cachorroC.cachorro.nome}" />
+                            <p:commandButton value="Pesquisar" update="tabela consulta" 
+                                             action="#{cachorroC.pesquisarPorNome()}" />
+                        </p:panelGrid>
+
+                        <p:dataTable id="tabela" var="pessoa" value="#{cachorroC.modelcachorros}" rows="10"
+                                     paginator="true" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                     rowsPerPageTemplate="5,10,15,{ShowAll|'Todos'}">
+                            <p:column headerText="Nome">
+                                <h:outputText value="#{pessoa.nome}" />
+                            </p:column>
+                            <p:column headerText="nascimento">
+                                <h:outputText value="#{pessoa.nascimento}" />
+                            </p:column>   
+                            <p:column headerText="peso">
+                                <h:outputText value="#{pessoa.peso}" />
+                            </p:column>   
+                            <p:column headerText="nome">
+                                <h:outputText value="#{pessoa.dono.nome}" />
+                            </p:column>   
+
+
+                            <p:column headerText="Ação">
+                                <p:commandButton icon="pi pi-pencil" title="Alterar" process="@this" 
+                                                 actionListener="#{cachorroC.prepararAlterar()}" update="@all"
+                                                 style="margin-right: 12px" styleClass="rounded-button ui-button-outlined" />
+
+                               
+                            </p:column>                       
+
+                        </p:dataTable>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" />
+                        </p:confirmDialog>
+
+                    </h:form>
+                </p:tab>
+
+                <!--aba para cadastrar e alterar-->
+                <p:tab title="Novo">
+                    <h:form id="form_novo">
+                        <p:panelGrid columns="2" layout="flex"
+                                     columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4,
+                                     p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4"
+                                     contentStyleClass="p-align-baseline ui-fluid">
+
+
+                            <p:outputLabel for="nascimento" value="Data de nascimento:" />
+                            <p:calendar id="nascimento" pattern="dd/mm/yyy" locale="pt" value="#{ConsultaC.consulta.dia}"/>
+
+                            
+                        
+                            
+
+                        </p:panelGrid>
+
+                       
+                        <p:commandButton value="Salvar" actionListener="#{ConsultaC.salvar()}"   update="@all"  />
+
+                    </h:form>
+                </p:tab>
+
+            </p:tabView>
+        </p:panel> 
+
+    </ui:define>
+
+</ui:composition>
